@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GraduationProjectBMS.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProjectBMS.Services
 {
-    public class MyDbContext : IdentityDbContext
+    public class MyDbContext : IdentityDbContext<AppUser>
     {
         public MyDbContext(DbContextOptions<MyDbContext> dbContext) : base(dbContext)
         {

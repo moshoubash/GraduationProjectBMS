@@ -1,3 +1,6 @@
+using GraduationProjectBMS.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace GraduationProjectBMS
 {
     public class Program
@@ -8,6 +11,8 @@ namespace GraduationProjectBMS
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
 
             var app = builder.Build();
 

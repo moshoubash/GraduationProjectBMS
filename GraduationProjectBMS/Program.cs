@@ -1,5 +1,6 @@
 using GraduationProjectBMS.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace GraduationProjectBMS
 {
@@ -13,6 +14,8 @@ namespace GraduationProjectBMS
             builder.Services.AddRazorPages();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
+
+            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MyDbContext>();
 
             var app = builder.Build();
 

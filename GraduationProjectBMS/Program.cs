@@ -16,7 +16,9 @@ namespace GraduationProjectBMS
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<MyDbContext>();
+            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<MyDbContext>();
 
             var app = builder.Build();
 

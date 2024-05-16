@@ -3,6 +3,7 @@ using GraduationProjectBMS.Models.System_Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace GraduationProjectBMS.Services
 {
@@ -22,9 +23,20 @@ namespace GraduationProjectBMS.Services
             user.NormalizedName = "user";
 
             builder.Entity<IdentityRole>().HasData(admin, user);
+
+            // Configure the one-to-many relationship
+            builder.Entity<Article>()
+                .HasOne(a => a.AppUser)
+                .WithMany(u => u.Articles)
+                .HasForeignKey(a => a.Id);
         }
 
+        public DbSet<Article> Articles { get; set; }
         /*public DbSet<Category> Categories { get; set; }
-        public DbSet<Article> Articles { get; set; }*/
+        
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }*/
     }
 }

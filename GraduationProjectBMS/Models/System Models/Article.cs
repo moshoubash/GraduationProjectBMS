@@ -5,7 +5,6 @@ namespace GraduationProjectBMS.Models.System_Models
     public class Article
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ArticleId { get; set; }
         [Required]
         public string? ArticleTitle { get; set; }
@@ -14,5 +13,8 @@ namespace GraduationProjectBMS.Models.System_Models
         public string? ArticleContent { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime EditAt { get; set; }
+
+        public string? Id { get; set; } // ForeignKey from AppUser class
+        public AppUser? AppUser { get; set; }
     }
 }

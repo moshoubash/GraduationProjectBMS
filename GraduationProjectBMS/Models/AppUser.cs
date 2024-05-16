@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GraduationProjectBMS.Models.System_Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GraduationProjectBMS.Models
 {
@@ -7,5 +8,7 @@ namespace GraduationProjectBMS.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public List<Article>? Articles { get; set; }
     }
 }

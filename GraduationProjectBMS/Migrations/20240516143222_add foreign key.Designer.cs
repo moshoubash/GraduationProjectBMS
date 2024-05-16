@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProjectBMS.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240514050536_add dbcontext with updated identityUser class")]
-    partial class adddbcontextwithupdatedidentityUserclass
+    [Migration("20240516143222_add foreign key")]
+    partial class addforeignkey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,43 @@ namespace GraduationProjectBMS.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("GraduationProjectBMS.Models.System_Models.Article", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleId"));
+
+                    b.Property<string>("ArticleContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArticleDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArticleThumbnail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ArticleTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EditAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ArticleId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Articles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -128,13 +165,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9c8b3b42-945c-425d-988f-0c296b2d825f",
+                            Id = "c5e6833e-dfe9-4dff-b07f-b5c4dc5fce29",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "1f1c931c-c03f-45c5-9ba9-1818b6943d48",
+                            Id = "4301240e-792f-4bfa-b3ba-b32f21f3ca0c",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -193,10 +230,12 @@ namespace GraduationProjectBMS.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -233,10 +272,12 @@ namespace GraduationProjectBMS.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -244,6 +285,15 @@ namespace GraduationProjectBMS.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.System_Models.Article", b =>
+                {
+                    b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
+                        .WithMany("Articles")
+                        .HasForeignKey("Id");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -295,6 +345,11 @@ namespace GraduationProjectBMS.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.AppUser", b =>
+                {
+                    b.Navigation("Articles");
                 });
 #pragma warning restore 612, 618
         }

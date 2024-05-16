@@ -4,6 +4,7 @@ using GraduationProjectBMS.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProjectBMS.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240516142720_first migration")]
+    partial class firstmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,6 +107,9 @@ namespace GraduationProjectBMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleId"));
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ArticleContent")
                         .HasColumnType("nvarchar(max)");
 
@@ -124,13 +130,13 @@ namespace GraduationProjectBMS.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ArticleId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("AppUserId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Article");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -162,13 +168,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5e6833e-dfe9-4dff-b07f-b5c4dc5fce29",
+                            Id = "0fca5b64-7919-43cf-be8c-9cef580c5de2",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "4301240e-792f-4bfa-b3ba-b32f21f3ca0c",
+                            Id = "1a96a904-483a-4d1f-b0f7-11ef8a51e2b2",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -288,7 +294,7 @@ namespace GraduationProjectBMS.Migrations
                 {
                     b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
                         .WithMany("Articles")
-                        .HasForeignKey("Id");
+                        .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
                 });

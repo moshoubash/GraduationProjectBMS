@@ -21,6 +21,7 @@ namespace GraduationProjectBMS
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
+            builder.Services.AddMvc(op => op.EnableEndpointRouting = false);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,7 +36,7 @@ namespace GraduationProjectBMS
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseMvcWithDefaultRoute();
             app.UseAuthorization();
 
             app.MapRazorPages();

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GraduationProjectBMS.Migrations
 {
     /// <inheritdoc />
-    public partial class adddbcontextwithupdatedidentityUserclass : Migration
+    public partial class firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,6 +77,31 @@ namespace GraduationProjectBMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Article",
+                columns: table => new
+                {
+                    ArticleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArticleTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ArticleThumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ArticleDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ArticleContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Article", x => x.ArticleId);
+                    table.ForeignKey(
+                        name: "FK_Article_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -101,8 +126,8 @@ namespace GraduationProjectBMS.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -146,8 +171,8 @@ namespace GraduationProjectBMS.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -166,9 +191,14 @@ namespace GraduationProjectBMS.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1f1c931c-c03f-45c5-9ba9-1818b6943d48", null, "user", "user" },
-                    { "9c8b3b42-945c-425d-988f-0c296b2d825f", null, "admin", "admin" }
+                    { "0fca5b64-7919-43cf-be8c-9cef580c5de2", null, "admin", "admin" },
+                    { "1a96a904-483a-4d1f-b0f7-11ef8a51e2b2", null, "user", "user" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Article_AppUserId",
+                table: "Article",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -213,6 +243,9 @@ namespace GraduationProjectBMS.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Article");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

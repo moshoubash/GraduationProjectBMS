@@ -1,4 +1,5 @@
 ﻿using GraduationProjectBMS.Models;
+using GraduationProjectBMS.Models.System_Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,5 +23,8 @@ namespace GraduationProjectBMS.Services
 
             builder.Entity<IdentityRole>().HasData(admin, user);
         }
+
+        /*public DbSet<Category> Categories { get; set; }
+        public DbSet<Article> Articles { get; set; }*/
     }
 }

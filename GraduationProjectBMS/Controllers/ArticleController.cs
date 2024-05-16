@@ -37,7 +37,7 @@ namespace GraduationProjectBMS.Controllers
         }
 
         // POST: ArticleController/Create
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
@@ -49,9 +49,9 @@ namespace GraduationProjectBMS.Controllers
             {
                 return View();
             }
-        }
+        }*/
 
-        /*[HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Article article)
         {
@@ -61,12 +61,12 @@ namespace GraduationProjectBMS.Controllers
                 article.Id = user.Id;
                 article.CreatedAt = DateTime.UtcNow;
 
-                _context.Add(article);
+                _context.Articles.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(article);
-        }*/
+        }
 
         // GET: ArticleController/Edit/5
         public ActionResult Edit(int id)

@@ -22,6 +22,10 @@ namespace GraduationProjectBMS
                 .AddEntityFrameworkStores<MyDbContext>();
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddMvc(op => op.EnableEndpointRouting = false);
+
+            // repository services injection
+            builder.Services.AddTransient<IArticleManager, ArticleManager>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

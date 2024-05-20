@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GraduationProjectBMS.Models.System_Models
+namespace GraduationProjectBMS.Models
 {
     public class Reply
     {

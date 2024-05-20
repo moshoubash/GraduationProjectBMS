@@ -1,0 +1,38 @@
+﻿@using GraduationProjectBMS.Models;
+@model Article
+@{
+    ViewData["Title"] = "Article Content";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<dl>
+    <dt>Id : </dt>
+    <dd>@Model.ArticleId</dd>
+
+    <!--Divider-->
+    <dt>Title : </dt>
+    <dd>@Model.ArticleTitle</dd>
+
+    <!--Divider-->
+    <dt>Thumbnail : </dt>
+    <dd>
+        <img src="/ArticlesThumbnails/@Model.ArticleThumbnail" width="40"></img>
+    </dd>
+
+    <!--Divider-->
+    <dt>Description : </dt>
+    <dd>@Model.ArticleDescription</dd>
+
+    <!--Divider-->
+    <dt>Create time : </dt>
+    <dd>@Model.CreatedAt</dd>
+
+    <!--Divider-->
+    <dt>Last edit time : </dt>
+    <dd>@Model.EditAt</dd>
+
+    <!--Divider-->
+    <dt>Content : </dt>
+    <dd>@Model.ArticleContent</dd>
+</dl>

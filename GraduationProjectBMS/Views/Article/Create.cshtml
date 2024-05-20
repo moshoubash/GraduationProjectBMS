@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Create new article";
+}
+
+<h1>
+    @ViewData["Title"]
+</h1>
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-groub">
+            <label for="title" class="form-label">Article Title</label>
+            <input id="title" class="form-control" name="ArticleTitle" type="text"/>
+        </div>
+
+        <div class="form-groub">
+            <label for="ArticleThumbnail" class="form-label">Article Thumbnail</label>
+            <input id="ArticleThumbnail" class="form-control" name="ArticleThumbnail" type="file"/>
+        </div>
+
+        <div class="form-groub">
+            <label for="Description" class="form-label">Article Description</label>
+            <input id="Description" class="form-control" name="ArticleDescription" type="text" />
+        </div>
+
+        <div class="form-groub">
+            <label for="content" class="form-label">Article Content</label>
+            <input id="content" class="form-control" name="ArticleContent" type="text"/>
+        </div>
+        <br />
+        <button class="btn btn-primary mt-2" type="submit">Submit</button>
+    </form>
+</div>

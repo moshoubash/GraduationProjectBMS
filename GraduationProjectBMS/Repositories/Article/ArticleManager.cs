@@ -1,7 +1,7 @@
-﻿
+﻿using GraduationProjectBMS.Models;
 using GraduationProjectBMS.Services;
 
-namespace GraduationProjectBMS.Repositories.Article
+namespace GraduationProjectBMS
 {
     public class ArticleManager : IArticleManager
     {
@@ -10,7 +10,7 @@ namespace GraduationProjectBMS.Repositories.Article
         {
             this._dbContext = _dbContext;
         }
-        void IArticleManager.CreateArticle(Models.System_Models.Article article)
+        void IArticleManager.CreateArticle(Article article)
         {
             _dbContext.Articles.Add(article);
             _dbContext.SaveChanges();
@@ -23,7 +23,7 @@ namespace GraduationProjectBMS.Repositories.Article
             _dbContext.SaveChanges();
         }
 
-        void IArticleManager.EditArticle(int id, Models.System_Models.Article article)
+        void IArticleManager.EditArticle(int id, Article article)
         {
             var targetArticle = (from x in _dbContext.Articles where x.ArticleId == id select x).FirstOrDefault();
             targetArticle.ArticleTitle = article.ArticleTitle;
@@ -34,13 +34,13 @@ namespace GraduationProjectBMS.Repositories.Article
             _dbContext.SaveChanges();
         }
 
-        Models.System_Models.Article IArticleManager.GetArticle(int id)
+        Article IArticleManager.GetArticle(int id)
         {
             var targetArticle = (from x in _dbContext.Articles where x.ArticleId == id select x).FirstOrDefault();
             return targetArticle;
         }
 
-        List<Models.System_Models.Article> IArticleManager.GetArticles()
+        List<Article> IArticleManager.GetArticles()
         {
             return _dbContext.Articles.ToList();
         }

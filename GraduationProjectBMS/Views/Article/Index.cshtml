@@ -1,0 +1,45 @@
+﻿@using GraduationProjectBMS.Models;
+@model List<Article>
+@{
+    ViewData["Title"] = "index page";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="/Article/Create/" class="btn btn-primary">Create an article</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Thumbnail</th>
+            <th>Created AT</th>
+            <th>Edited AT</th>
+            <th>Edit | Details | Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.ArticleId</td>
+                    <td>@x.ArticleTitle</td>
+                    <td>@x.ArticleDescription</td>
+                    <td>
+                        <img src="/ArticlesThumbnails/@x.ArticleThumbnail" width="40"></img>
+                    </td>
+                    <td>@x.CreatedAt</td>
+                    <td>@x.EditAt</td>
+                    <td>
+                        <a href="/Article/Edit/@x.ArticleId/" class="btn btn-dark">Edit</a>
+                        <a href="/Article/Details/@x.ArticleId/" class="btn btn-warning">Details</a>
+                        <a href="/Article/Delete/@x.ArticleId/" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>    
+            }
+        }
+    </tbody>
+</table>

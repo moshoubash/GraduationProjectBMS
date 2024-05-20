@@ -1,5 +1,4 @@
-﻿using GraduationProjectBMS.Models.System_Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace GraduationProjectBMS.Models
 {

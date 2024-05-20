@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace GraduationProjectBMS.Models.System_Models
+namespace GraduationProjectBMS.Models
 {
     public class Comment
     {

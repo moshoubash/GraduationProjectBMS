@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraduationProjectBMS", "GraduationProjectBMS\GraduationProjectBMS.csproj", "{1350B8D8-8489-48C7-9A2A-F5D5A2455CBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraduationProjectBMS", "GraduationProjectBMS\GraduationProjectBMS.csproj", "{1350B8D8-8489-48C7-9A2A-F5D5A2455CBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

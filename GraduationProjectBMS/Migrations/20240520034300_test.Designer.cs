@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProjectBMS.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240516143222_add foreign key")]
-    partial class addforeignkey
+    [Migration("20240520034300_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -99,7 +99,7 @@ namespace GraduationProjectBMS.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("GraduationProjectBMS.Models.System_Models.Article", b =>
+            modelBuilder.Entity("GraduationProjectBMS.Models.Article", b =>
                 {
                     b.Property<int>("ArticleId")
                         .ValueGeneratedOnAdd()
@@ -165,13 +165,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5e6833e-dfe9-4dff-b07f-b5c4dc5fce29",
+                            Id = "9107f949-9dd2-4c3d-9c61-1e0a570a546d",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "4301240e-792f-4bfa-b3ba-b32f21f3ca0c",
+                            Id = "7b7d2240-3ede-4e49-baa2-eb801da25f16",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -287,7 +287,7 @@ namespace GraduationProjectBMS.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GraduationProjectBMS.Models.System_Models.Article", b =>
+            modelBuilder.Entity("GraduationProjectBMS.Models.Article", b =>
                 {
                     b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
                         .WithMany("Articles")

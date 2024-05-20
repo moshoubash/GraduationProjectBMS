@@ -1,15 +1,25 @@
 ﻿using GraduationProjectBMS.Models;
 using GraduationProjectBMS.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace GraduationProjectBMS
 {
     public class ArticleManager : IArticleManager
     {
         private readonly MyDbContext _dbContext;
-        public ArticleManager(MyDbContext _dbContext)
+        private readonly UserManager<AppUser> _userManager;
+        public ArticleManager(MyDbContext _dbContext, UserManager<AppUser> userManager)
         {
             this._dbContext = _dbContext;
+            _userManager = userManager;
+
         }
+
+        public List<Article> GetUserArticles(string id)
+        {
+            return _dbContext.Articles.Where(x=> x.Id == id).ToList();
+        }
+
         void IArticleManager.CreateArticle(Article article)
         {
             _dbContext.Articles.Add(article);

@@ -19,9 +19,10 @@ namespace GraduationProjectBMS.Controllers
             this.userManager = userManager;
         }
         // GET: ArticleController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(articleManager.GetArticles());
+            var user = await userManager.GetUserAsync(User);
+            return View(articleManager.GetUserArticles(user.Id));
         }
 
         // GET: ArticleController/Details/5
@@ -36,11 +37,11 @@ namespace GraduationProjectBMS.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "user")]
         // POST: ArticleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Article article, IFormFile ArticleThumbnail)
+        [Authorize(Roles = "user")]
+        public async Task<ActionResult> Create(Article article, IFormFile ArticleThumbnail)
         {
             try
             {
@@ -58,8 +59,8 @@ namespace GraduationProjectBMS.Controllers
                 }
                 article.CreatedAt = DateTime.Now;
                 article.EditAt = DateTime.Now;
-                /*var userId = await userManager.GetUserIdAsync();*//**/
-                /*article.Id = userId;*/
+                var user = await userManager.GetUserAsync(User);
+                article.Id = user.Id;
 
                 articleManager.CreateArticle(article);
                 return RedirectToAction(nameof(Index));

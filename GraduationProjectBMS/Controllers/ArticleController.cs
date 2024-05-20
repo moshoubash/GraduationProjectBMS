@@ -44,15 +44,18 @@ namespace GraduationProjectBMS.Controllers
         {
             try
             {
-                var wwroot = webHostEnvironment.WebRootPath + "/ArticlesThumbnails";
-                Guid guid = Guid.NewGuid();
-                var fullPath = System.IO.Path.Combine(wwroot, guid+ ArticleThumbnail.FileName);
+                if (ArticleThumbnail != null) {
+                    var wwroot = webHostEnvironment.WebRootPath + "/ArticlesThumbnails";
+                    Guid guid = Guid.NewGuid();
+                    var fullPath = System.IO.Path.Combine(wwroot, guid + ArticleThumbnail.FileName);
 
-                using (var stream = new FileStream(fullPath, FileMode.Create)) {
-                    ArticleThumbnail.CopyTo(stream);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        ArticleThumbnail.CopyTo(stream);
+                    }
+
+                    article.ArticleThumbnail = guid + ArticleThumbnail.FileName;
                 }
-
-                article.ArticleThumbnail = guid + ArticleThumbnail.FileName;
                 article.CreatedAt = DateTime.Now;
                 article.EditAt = DateTime.Now;
                 /*var userId = await userManager.GetUserIdAsync();*//**/

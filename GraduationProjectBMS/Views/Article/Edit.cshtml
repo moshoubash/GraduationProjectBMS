@@ -26,11 +26,29 @@
 
         <div class="form-groub">
             <label for="content" class="form-label">Article Content</label>
+            <!--QuillJs-->
             <input id="content" class="form-control" name="ArticleContent" type="text" value="@Model.ArticleContent" />
         </div>
         <br />
         <button class="btn btn-primary" type="submit">Submit</button>
         <a href="/Article/Index" class="btn btn-dark">Back to list</a>
-        <a href="/Article/Delete/@Model.ArticleId" class="btn btn-danger">Delete</a>
+        <a href="/Article/Delete/@Model.ArticleId" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">Delete</a>
     </form>
+</div>
+<div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete this article ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <a type="button" class="btn btn-danger" href="/Article/Delete/@Model.ArticleId">Delete</a>
+            </div>
+        </div>
+    </div>
 </div>

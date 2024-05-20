@@ -4,11 +4,11 @@
     ViewData["Title"] = "index page";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
 <a href="/Article/Create/" class="btn btn-primary">Create an article</a>
 
-<table class="table table-bordered">
+<table class="table table-bordered mt-3">
     <thead>
         <tr>
             <th>Id</th>
@@ -36,10 +36,28 @@
                     <td>
                         <a href="/Article/Edit/@x.ArticleId/" class="btn btn-dark">Edit</a>
                         <a href="/Article/Details/@x.ArticleId/" class="btn btn-warning">Details</a>
-                        <a href="/Article/Delete/@x.ArticleId/" class="btn btn-danger">Delete</a>
+                        <a href="/Article/Delete/@x.ArticleId/" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">Delete</a>
                     </td>
-                </tr>    
+                </tr>
+                <div class="modal" tabindex="-1" id="deleteModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you really want to delete this article ?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                <a type="button" class="btn btn-danger" href="/Article/Delete/@x.ArticleId">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         }
     </tbody>
 </table>
+

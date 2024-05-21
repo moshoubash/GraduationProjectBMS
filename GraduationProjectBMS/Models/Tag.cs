@@ -9,5 +9,8 @@ namespace GraduationProjectBMS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TagId { get; set; }
         public string? TagName { get; set; }
+
+        public int ArticleId { get; set; }
+        public Article? Article { get; set; }
     }
 }

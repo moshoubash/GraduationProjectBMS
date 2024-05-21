@@ -20,11 +20,16 @@ namespace GraduationProjectBMS
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
-            builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddMvc(op => op.EnableEndpointRouting = false);
 
             // repository services injection
+            builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IArticleManager, ArticleManager>();
+            builder.Services.AddTransient<ILikeManager, LikeManager>();
+            /*builder.Services.AddTransient<ILikeManager, LikeManager>();
+            builder.Services.AddTransient<ILikeManager, LikeManager>();
+            builder.Services.AddTransient<ILikeManager, LikeManager>();
+            builder.Services.AddTransient<ILikeManager, LikeManager>();*/
 
             var app = builder.Build();
 

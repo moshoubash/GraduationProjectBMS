@@ -12,17 +12,25 @@ namespace GraduationProjectBMS.Controllers
         private readonly IArticleManager articleManager;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<AppUser> userManager;
-        public ArticleController(UserManager<AppUser> userManager, IArticleManager articleManager, IWebHostEnvironment webHostEnvironment)
+        private readonly SignInManager<AppUser> signManager;
+        public ArticleController(UserManager<AppUser> userManager, IArticleManager articleManager, IWebHostEnvironment webHostEnvironment, SignInManager<AppUser> signManager)
         {
             this.articleManager = articleManager;
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
+            this.signManager = signManager;
         }
         // GET: ArticleController
         public async Task<ActionResult> Index()
         {
-            var user = await userManager.GetUserAsync(User);
-            return View(articleManager.GetUserArticles(user.Id));
+            if (signManager.IsSignedIn(User))
+            {
+                var user = await userManager.GetUserAsync(User);
+                return View(articleManager.GetUserArticles(user.Id));
+            }
+            else {
+                return View();
+            }
         }
 
         // GET: ArticleController/Details/5
@@ -61,7 +69,7 @@ namespace GraduationProjectBMS.Controllers
                 article.EditAt = DateTime.Now;
                 var user = await userManager.GetUserAsync(User);
                 article.Id = user.Id;
-
+                article.CategoryId = 1;
                 articleManager.CreateArticle(article);
                 return RedirectToAction(nameof(Index));
             }

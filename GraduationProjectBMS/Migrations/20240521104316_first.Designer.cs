@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProjectBMS.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240520034300_test")]
-    partial class test
+    [Migration("20240521104316_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,8 +117,10 @@ namespace GraduationProjectBMS.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ArticleTitle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -129,11 +131,135 @@ namespace GraduationProjectBMS.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("TotalLikes")
+                        .HasColumnType("int");
+
                     b.HasKey("ArticleId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Id");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+
+                    b.Property<string>("ArticleId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ArticleId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalLikes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ArticleId1");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Like", b =>
+                {
+                    b.Property<int>("LikeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"));
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LikeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Reply", b =>
+                {
+                    b.Property<int>("ReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplyId"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReplyContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ReplyId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Replies");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Tag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TagName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TagId");
+
+                    b.HasIndex("ArticleId");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -165,13 +291,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9107f949-9dd2-4c3d-9c61-1e0a570a546d",
+                            Id = "53922738-c601-4ca9-8b3c-52a723a571ca",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "7b7d2240-3ede-4e49-baa2-eb801da25f16",
+                            Id = "5bb148c8-4ccd-42d5-9fd9-8f2ffb2acd0a",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -289,11 +415,71 @@ namespace GraduationProjectBMS.Migrations
 
             modelBuilder.Entity("GraduationProjectBMS.Models.Article", b =>
                 {
+                    b.HasOne("GraduationProjectBMS.Models.Category", "Category")
+                        .WithMany("Articles")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
                         .WithMany("Articles")
                         .HasForeignKey("Id");
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Comment", b =>
+                {
+                    b.HasOne("GraduationProjectBMS.Models.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId1");
+
+                    b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Like", b =>
+                {
+                    b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Reply", b =>
+                {
+                    b.HasOne("GraduationProjectBMS.Models.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
+                        .WithMany("Replies")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Tag", b =>
+                {
+                    b.HasOne("GraduationProjectBMS.Models.Article", "Article")
+                        .WithMany("Tags")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -350,6 +536,29 @@ namespace GraduationProjectBMS.Migrations
             modelBuilder.Entity("GraduationProjectBMS.Models.AppUser", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Article", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Category", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("GraduationProjectBMS.Models.Comment", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

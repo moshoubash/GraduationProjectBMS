@@ -10,5 +10,13 @@ namespace GraduationProjectBMS.Models
         public int ReplyId { get; set; }
         public string? ReplyContent { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        // referance for user
+        public string? UserId { get; set; }
+        public AppUser? AppUser { get; set; }
+
+        // referance for comment id
+        public int CommentId { get; set; }
+        public Comment? Comment { get; set; }
     }
 }

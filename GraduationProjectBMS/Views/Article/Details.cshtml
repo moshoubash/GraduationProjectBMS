@@ -2,57 +2,26 @@
 @model Article
 @{
     ViewData["Title"] = "Article Content";
+    Layout = "_ArticleLayout";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container col-md-8" id="blogpost">
+    <div class="col-md-12">
+        <h1 class="display-5">
+            @Model.ArticleTitle
+        </h1>
 
-<dl>
-    <dt>Id : </dt>
-    <dd>@Model.ArticleId</dd>
+        <p class="text-secondary">
+            Created At : @Model.CreatedAt.ToString("dd-MM-yyyy") by @Model.UserFullName
+        </p>
 
-    <!--Divider-->
-    <dt>Title : </dt>
-    <dd>@Model.ArticleTitle</dd>
+        <img src="~/ArticlesThumbnails/@Model.ArticleThumbnail" width="100%"/>
 
-    <!--Divider-->
-    <dt>Thumbnail : </dt>
-    <dd>
-        <img src="/ArticlesThumbnails/@Model.ArticleThumbnail" width="40"></img>
-    </dd>
-
-    <!--Divider-->
-    <dt>Description : </dt>
-    <dd>@Model.ArticleDescription</dd>
-
-    <!--Divider-->
-    <dt>Create time : </dt>
-    <dd>@Model.CreatedAt</dd>
-
-    <!--Divider-->
-    <dt>Last edit time : </dt>
-    <dd>@Model.EditAt</dd>
-
-    <!--Divider-->
-    <dt>Content : </dt>
-    <dd>@Html.Raw(Model.ArticleContent)</dd>
-</dl>
-
-<a href="/Article/Index" class="btn btn-primary">Back to list</a>
-<a href="/Article/Delete/@Model.ArticleId" data-bs-toggle="modal" data-bs-target="#deleteModal"  class="btn btn-danger">Delete</a>
-<div class="modal" tabindex="-1" id="deleteModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you really want to delete this article ?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                <a type="button" class="btn btn-danger" href="/Article/Delete/@Model.ArticleId">Delete</a>
-            </div>
+        <div id="content">
+            @Html.Raw(@Model.ArticleContent)
         </div>
+        <a href="#"><i class="fa-solid fa-heart"></i></a>
+        <span>@Model.TotalLikes</span>
     </div>
 </div>
+

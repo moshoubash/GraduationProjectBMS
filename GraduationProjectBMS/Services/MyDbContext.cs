@@ -35,6 +35,13 @@ namespace GraduationProjectBMS.Services
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.CategoryId);
 
+            // Configure the one-to-many relationship - Category
+
+            builder.Entity<Category>()
+                .HasMany(a => a.Articles)
+                .WithOne(u => u.Category)
+                .HasForeignKey(a => a.ArticleId);
+
             // Configure the one-to-many relationship - Comments
 
             builder.Entity<Comment>()
@@ -55,6 +62,11 @@ namespace GraduationProjectBMS.Services
                 .HasOne(a => a.AppUser)
                 .WithMany(u => u.Likes)
                 .HasForeignKey(a => a.UserId);
+
+            builder.Entity<Like>()
+                .HasOne(a => a.Article)
+                .WithMany(x => x.Likes)
+                .HasForeignKey(a => a.ArticleId);
 
             // Configure the one-to-many relationship - tags
 

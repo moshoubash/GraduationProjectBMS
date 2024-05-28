@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using GraduationProjectBMS.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GraduationProjectBMS.Email;
+using GraduationProjectBMS.Repositories.User;
 
 namespace GraduationProjectBMS
 {
@@ -25,7 +26,7 @@ namespace GraduationProjectBMS
             // repository services injection
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IArticleManager, ArticleManager>();
-            builder.Services.AddTransient<ILikeManager, LikeManager>();
+            builder.Services.AddTransient<IUserFunctions, UserFunctions>();
             /*builder.Services.AddTransient<ILikeManager, LikeManager>();
             builder.Services.AddTransient<ILikeManager, LikeManager>();
             builder.Services.AddTransient<ILikeManager, LikeManager>();

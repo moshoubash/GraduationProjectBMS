@@ -11,5 +11,9 @@ namespace GraduationProjectBMS.Models
 
         public string? UserId { get; set; }
         public AppUser? AppUser { get; set; }
+
+        public int ArticleId { get; set; }
+        public Article? Article { get; set; }
+
     }
 }

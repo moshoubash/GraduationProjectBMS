@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Search for articles";
+    Layout = "_SearchLayout";
+}
+
+<h1 class="display-1 text-center mb-4">@ViewData["Title"]</h1>
+<form method="post">
+    <div class="form-group" id="searchBar">
+        <input type="text" class="form-control" id="searchbar" />
+        <button type="submit" class="btn btn-dark"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+</form>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/GraduationProjectBMS.styles.css" asp-append-version="true" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!--QuiiJs-->
+    <!--QuillJs-->
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -19,7 +19,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">GraduationProjectBMS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -29,13 +29,12 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Article/Index">Home</a>
+                            <a class="nav-link text-light" href="/Article/Index">Manage Articles</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-light" href="/Article/Create">Create Article</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -43,28 +42,26 @@
     <div class="container">
         <div class="container-fluid">
             <div class="row">
-                <div id="sidebar" class="col-md-3 pt-3 col-lg-3 text-center border right">
+                <div id="sidebar" class="col-md-3 pt-3 col-lg-3 text-center">
                     <h2 class="mb-3">
                         Pages
                     </h2>
 
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action" href="/Index">Home</a>
                         <a class="list-group-item list-group-item-action" href="/Article/Create/">Create Article</a>
                         <a class="list-group-item list-group-item-action" href="/Article/Index">Manage Articles</a>
-                        <a class="list-group-item list-group-item-action" href="#">Analysis</a>
                         <a class="list-group-item list-group-item-action text-light bg-danger" href="/Identity/Account/Logout">Logout</a>
                     </div>
                 </div>
 
-                <div class="col-md-9 pt-3 ">
+                <div class="col-md-9 pt-3">
                     @RenderBody()
                 </div>
             </div>
         </div>
     </div>
     
-    <footer class="border-top footer text-muted bg-black">
+    <footer class="border-top footer text-light bg-black">
         <div class="container">
             &copy; 2024 - Blogging System - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>

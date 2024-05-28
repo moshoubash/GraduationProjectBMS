@@ -22,5 +22,23 @@ body {
 }
 
 #sidebar {
-    height: 500px;
+    height: 80vh;
+    padding-right:20px;
+}
+
+p {
+    font-size:1rem;
+}
+
+#blogpost {
+    padding:10px 40px;
+}
+
+#content {
+    padding:30px 0;
+}
+
+#searchBar {
+    display:flex;
+    flex-direction:row;
 }

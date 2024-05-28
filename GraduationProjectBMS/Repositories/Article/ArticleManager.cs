@@ -1,6 +1,7 @@
 ﻿using GraduationProjectBMS.Models;
 using GraduationProjectBMS.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProjectBMS
 {
@@ -38,7 +39,6 @@ namespace GraduationProjectBMS
             var targetArticle = (from x in _dbContext.Articles where x.ArticleId == id select x).FirstOrDefault();
             targetArticle.ArticleTitle = article.ArticleTitle;
             targetArticle.ArticleContent = article.ArticleContent;
-            targetArticle.ArticleDescription = article.ArticleDescription;
             targetArticle.ArticleThumbnail = article.ArticleThumbnail;
 
             _dbContext.SaveChanges();
@@ -47,6 +47,12 @@ namespace GraduationProjectBMS
         Article IArticleManager.GetArticle(int id)
         {
             var targetArticle = (from x in _dbContext.Articles where x.ArticleId == id select x).FirstOrDefault();
+            return targetArticle;
+        }
+
+        Article IArticleManager.GetArticleByTitle(string ArticleTitle)
+        {
+            var targetArticle = (from article in _dbContext.Articles where article.ArticleTitle == ArticleTitle select article).FirstOrDefault();
             return targetArticle;
         }
 

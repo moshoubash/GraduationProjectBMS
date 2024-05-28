@@ -10,5 +10,6 @@ namespace GraduationProjectBMS
         public void DeleteArticle(int id);
         public void EditArticle(int id, Article article);
         public Article GetArticle(int id);
+        public Article GetArticleByTitle(string ArticleTitle);
     }
 }

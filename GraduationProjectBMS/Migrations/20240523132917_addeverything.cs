@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GraduationProjectBMS.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class addeverything : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,8 +32,7 @@ namespace GraduationProjectBMS.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -175,24 +174,6 @@ namespace GraduationProjectBMS.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Likes",
-                columns: table => new
-                {
-                    LikeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Likes", x => x.LikeId);
-                    table.ForeignKey(
-                        name: "FK_Likes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
                 {
@@ -200,10 +181,10 @@ namespace GraduationProjectBMS.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ArticleTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ArticleThumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ArticleDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ArticleContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TotalLikes = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
@@ -234,18 +215,38 @@ namespace GraduationProjectBMS.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalLikes = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ArticleId = table.Column<int>(type: "int", nullable: true)
+                    ArticleId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.CommentId);
                     table.ForeignKey(
-                        name: "FK_Comments_Articles_ArticleId",
+                        name: "FK_Comments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    LikeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ArticleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => x.LikeId);
+                    table.ForeignKey(
+                        name: "FK_Likes_Articles_ArticleId",
                         column: x => x.ArticleId,
                         principalTable: "Articles",
-                        principalColumn: "ArticleId");
+                        principalColumn: "ArticleId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_UserId",
+                        name: "FK_Likes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -303,8 +304,8 @@ namespace GraduationProjectBMS.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "53922738-c601-4ca9-8b3c-52a723a571ca", null, "admin", "admin" },
-                    { "5bb148c8-4ccd-42d5-9fd9-8f2ffb2acd0a", null, "user", "user" }
+                    { "6c5f1860-0d15-4713-9fd1-ce602e1265cf", null, "user", "user" },
+                    { "a8f9ac8a-9c76-4420-8432-5cbb022caaf3", null, "admin", "admin" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -357,14 +358,14 @@ namespace GraduationProjectBMS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ArticleId1",
-                table: "Comments",
-                column: "ArticleId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
                 table: "Comments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_ArticleId",
+                table: "Likes",
+                column: "ArticleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_UserId",

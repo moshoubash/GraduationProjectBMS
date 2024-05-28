@@ -17,23 +17,12 @@
         <label for="ArticleThumbnail" class="form-label">Article Thumbnail</label>
         <input id="ArticleThumbnail" class="form-control" name="ArticleThumbnail" type="file"/>
     </div>
-
+    
     <div class="form-group">
-        <label for="Description" class="form-label">Article Description</label>
-        <input id="Description" class="form-control" name="ArticleDescription" type="text" />
+        <label class="control-label">Article Category</label>
+        <select class="form-control" asp-items="ViewBag.CategoryId"></select>
     </div>
-@* 
-    <div class="form-group">
-        <label for="Category" class="form-label">Category</label>
 
-        <select id="Category" class="form-select" name="CategoryId" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
-    </div> *@
-        
     <div class="form-group">
         <label for="content" class="form-label">Article Content</label>
         <div id="toolbar-container">

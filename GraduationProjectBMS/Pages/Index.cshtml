@@ -4,6 +4,23 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center mb-xl-5">
-    <h1 class="display-4">List of articles</h1>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @{
+                foreach (var x in Model.GetArticles())
+                {
+                    <!-- Post preview-->
+                    <div class="post">
+                        <a href="/Article/Details/@x.ArticleId" target="_blank"><h2>@x.ArticleTitle</h2></a>
+                        <p class="text-secondary">Posted by @x.UserFullName on @x.CreatedAt.ToString("dd-MM-yyyy")</p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                }
+            }
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
 </div>

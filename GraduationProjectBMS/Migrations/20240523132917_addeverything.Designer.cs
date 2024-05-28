@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProjectBMS.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240521104316_first")]
-    partial class first
+    [Migration("20240523132917_addeverything")]
+    partial class addeverything
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,10 +47,7 @@ namespace GraduationProjectBMS.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -110,9 +107,6 @@ namespace GraduationProjectBMS.Migrations
                     b.Property<string>("ArticleContent")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ArticleDescription")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ArticleThumbnail")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +127,9 @@ namespace GraduationProjectBMS.Migrations
 
                     b.Property<int>("TotalLikes")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserFullName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ArticleId");
 
@@ -202,10 +199,15 @@ namespace GraduationProjectBMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"));
 
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LikeId");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -291,13 +293,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "53922738-c601-4ca9-8b3c-52a723a571ca",
+                            Id = "a8f9ac8a-9c76-4420-8432-5cbb022caaf3",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "5bb148c8-4ccd-42d5-9fd9-8f2ffb2acd0a",
+                            Id = "6c5f1860-0d15-4713-9fd1-ce602e1265cf",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -447,11 +449,19 @@ namespace GraduationProjectBMS.Migrations
 
             modelBuilder.Entity("GraduationProjectBMS.Models.Like", b =>
                 {
+                    b.HasOne("GraduationProjectBMS.Models.Article", "Article")
+                        .WithMany("Likes")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
                         .WithMany("Likes")
                         .HasForeignKey("UserId");
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Article");
                 });
 
             modelBuilder.Entity("GraduationProjectBMS.Models.Reply", b =>
@@ -547,6 +557,8 @@ namespace GraduationProjectBMS.Migrations
             modelBuilder.Entity("GraduationProjectBMS.Models.Article", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
 
                     b.Navigation("Tags");
                 });

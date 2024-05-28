@@ -71,9 +71,11 @@
         </div>
         <input type="hidden" id="jdr" name="ArticleContent" />
         <div id="editor"></div>
+
+        <input type="hidden" id="cid" name="CategoryId" />
     </div>
     <br />
-    <button id="btn" class="btn btn-primary mt-2" type="submit">Submit</button>
+    <button id="btn" class="btn btn-primary mt-2" type="submit" onclick="bind()">Submit</button>
 </form>
 
 <script>
@@ -88,5 +90,7 @@
 
     function fn() { 
         document.getElementById('jdr').value = quill.root.innerHTML;
+        document.getElementById('cid').value = Number(document.getElementsByTagName('select')[0].value);
     }
+        
 </script>

@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Create new category";
+    Layout = "_LayoutAdmin";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class"form-group">
+        <label for="CategoryName" class="form-label">Enter category name : </label>
+        <input type="text" id="CategoryName" name="CategoryName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-dark">Submit</button>
+</form>

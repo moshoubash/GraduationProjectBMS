@@ -1,0 +1,38 @@
+﻿@using GraduationProjectBMS.Models;
+@model List<AppUser>
+@{
+    ViewData["Title"] = "users list";
+    Layout = "_LayoutAdmin";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Full Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Delete User</th>
+            <th>User Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Id</td>
+                    <td>@x.FullName</td>
+                    <td>@x.PhoneNumber</td>
+                    <td>@x.Email</td>
+                    <td>
+                        <a href="/Users/Delete/@x.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                    <td>
+                        <a href="/Users/Details/@x.Id" class="btn btn-info">Details</a>
+                    </td>
+                </tr>    
+            }
+        }
+    </tbody>
+</table>

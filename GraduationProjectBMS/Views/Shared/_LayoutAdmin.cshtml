@@ -29,13 +29,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="/Article/Index">Manage Articles</a>
+                            <a class="nav-link text-light" href="/Category/Create">Create Category</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="/Article/Create">Create Article</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-danger text-light" href="/Identity/Account/Logout">Sign Out</a>
+                            <a class="nav-link text-light" href="/Category/List">List of category</a>
                         </li>
                     </ul>
                 </div>
@@ -43,7 +40,26 @@
         </nav>
     </header>
     <div class="container">
-        @RenderBody()
+        <div class="container-fluid">
+            <div class="row">
+                <div id="sidebar" class="col-md-3 pt-3 col-lg-3 text-center">
+                    <h2 class="mb-3">
+                        Pages
+                    </h2>
+
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" href="/Category/Create/">Create Category</a>
+                        <a class="list-group-item list-group-item-action" href="/Category/List">Manage Categories</a>
+                        <a class="list-group-item list-group-item-action" href="/Users/List">Manage Users</a>
+                        <a class="list-group-item list-group-item-action text-light bg-danger" href="/Identity/Account/Logout">Logout</a>
+                    </div>
+                </div>
+
+                <div class="col-md-9 pt-3">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
     </div>
     
     <footer class="border-top footer text-light bg-black">

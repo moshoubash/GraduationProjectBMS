@@ -5,6 +5,8 @@ using GraduationProjectBMS.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GraduationProjectBMS.Email;
 using GraduationProjectBMS.Repositories.User;
+using GraduationProjectBMS.Repositories.Category;
+using GraduationProjectBMS.Hubs;
 
 namespace GraduationProjectBMS
 {
@@ -16,6 +18,8 @@ namespace GraduationProjectBMS
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddSignalR();
+            
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -27,10 +31,10 @@ namespace GraduationProjectBMS
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IArticleManager, ArticleManager>();
             builder.Services.AddTransient<IUserFunctions, UserFunctions>();
-            /*builder.Services.AddTransient<ILikeManager, LikeManager>();
-            builder.Services.AddTransient<ILikeManager, LikeManager>();
-            builder.Services.AddTransient<ILikeManager, LikeManager>();
-            builder.Services.AddTransient<ILikeManager, LikeManager>();*/
+            builder.Services.AddTransient<ICategoryManager, CategoryManager>();
+
+
+            /*builder.Services.AddControllersWithViews();*/
 
             var app = builder.Build();
 
@@ -49,6 +53,7 @@ namespace GraduationProjectBMS
             app.UseAuthorization();
 
             app.MapRazorPages();
+            app.MapHub<ChatHub>("/chatHub");
             app.Run();
         }
     }

@@ -122,9 +122,6 @@ namespace GraduationProjectBMS.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("TotalLikes")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserFullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -161,10 +158,7 @@ namespace GraduationProjectBMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
-                    b.Property<string>("ArticleId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ArticleId1")
+                    b.Property<int?>("ArticleId")
                         .HasColumnType("int");
 
                     b.Property<string>("CommentContent")
@@ -181,7 +175,7 @@ namespace GraduationProjectBMS.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("ArticleId1");
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -290,13 +284,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a8f9ac8a-9c76-4420-8432-5cbb022caaf3",
+                            Id = "7542c283-c847-43c2-80c2-016e6637926d",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "6c5f1860-0d15-4713-9fd1-ce602e1265cf",
+                            Id = "122f4dbd-66a6-4778-bdc7-8b309e8d05bc",
                             Name = "user",
                             NormalizedName = "user"
                         });
@@ -433,7 +427,7 @@ namespace GraduationProjectBMS.Migrations
                 {
                     b.HasOne("GraduationProjectBMS.Models.Article", "Article")
                         .WithMany("Comments")
-                        .HasForeignKey("ArticleId1");
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("GraduationProjectBMS.Models.AppUser", "AppUser")
                         .WithMany("Comments")

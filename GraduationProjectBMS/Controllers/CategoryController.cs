@@ -10,21 +10,19 @@ namespace GraduationProjectBMS.Controllers
     public class CategoryController : Controller
     {
         private readonly MyDbContext _context;
-        public CategoryController(MyDbContext _context)
+        private readonly ICategoryManager categoryManager;
+        public CategoryController(MyDbContext _context, ICategoryManager categoryManager)
         {
             this._context = _context;
+            this.categoryManager = categoryManager;
+
         }
         // GET: CategoryController
-        public async Task<ActionResult> Index()
+        public ActionResult List()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(categoryManager.GetCategories());
         }
 
-        // GET: CategoryController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
@@ -37,17 +35,13 @@ namespace GraduationProjectBMS.Controllers
         // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Category category)
+        [Authorize(Roles = "admin")]
+        public ActionResult Create(Category category)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(category);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(category);
+                categoryManager.CreateCategory(category);
+                return RedirectToAction(nameof(List));
             }
             catch
             {
@@ -55,41 +49,12 @@ namespace GraduationProjectBMS.Controllers
             }
         }
 
-        // GET: CategoryController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CategoryController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CategoryController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: CategoryController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
             try
             {
-                return RedirectToAction(nameof(Index));
+                categoryManager.DeleteCategory(id);
+                return RedirectToAction(nameof(List));
             }
             catch
             {

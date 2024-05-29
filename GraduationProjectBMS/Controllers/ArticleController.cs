@@ -20,15 +20,13 @@ namespace GraduationProjectBMS.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signManager;
-        private readonly IUserFunctions userFunctions;
         private readonly MyDbContext dbContext;
-        public ArticleController(UserManager<AppUser> userManager, IArticleManager articleManager, IWebHostEnvironment webHostEnvironment, SignInManager<AppUser> signManager, IUserFunctions userFunctions, MyDbContext dbContext)
+        public ArticleController(UserManager<AppUser> userManager, IArticleManager articleManager, IWebHostEnvironment webHostEnvironment, SignInManager<AppUser> signManager,  MyDbContext dbContext)
         {
             this.articleManager = articleManager;
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
             this.signManager = signManager;
-            this.userFunctions = userFunctions;
             this.dbContext = dbContext;
         }
         // GET: ArticleController
@@ -38,7 +36,10 @@ namespace GraduationProjectBMS.Controllers
             if (signManager.IsSignedIn(User))
             {
                 var user = await userManager.GetUserAsync(User);
-                return View(articleManager.GetUserArticles(user.Id));
+                if (user != null)
+                    return View(articleManager.GetUserArticles(user.Id));
+                else
+                    return View();
             }
             else
             {
@@ -47,9 +48,12 @@ namespace GraduationProjectBMS.Controllers
         }
 
         // GET: ArticleController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
-            var article = await dbContext.Articles.FirstOrDefaultAsync(m => m.ArticleId == id);
+            var article = dbContext.Articles
+            .Include(a => a.Likes)
+            .FirstOrDefault(a => a.ArticleId == id);
+
             if (article == null)
             {
                 return NotFound();
@@ -73,26 +77,37 @@ namespace GraduationProjectBMS.Controllers
         {
             try
             {
-                if (ArticleThumbnail != null)
-                {
-                    var wwroot = webHostEnvironment.WebRootPath + "/ArticlesThumbnails";
-                    Guid guid = Guid.NewGuid();
-                    var fullPath = System.IO.Path.Combine(wwroot, guid + ArticleThumbnail.FileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                if (ModelState.IsValid) {
+                    if (ArticleThumbnail != null)
                     {
-                        ArticleThumbnail.CopyTo(stream);
-                    }
+                        var wwroot = webHostEnvironment.WebRootPath + "/ArticlesThumbnails";
+                        Guid guid = Guid.NewGuid();
+                        var fullPath = System.IO.Path.Combine(wwroot, guid + ArticleThumbnail.FileName);
 
-                    article.ArticleThumbnail = guid + ArticleThumbnail.FileName;
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            ArticleThumbnail.CopyTo(stream);
+                        }
+
+                        article.ArticleThumbnail = guid + ArticleThumbnail.FileName;
+                    }
+                    article.CreatedAt = DateTime.Now;
+                    article.EditAt = DateTime.Now;
+                    var user = await userManager.GetUserAsync(User);
+                    article.Id = user.Id;
+                    article.UserFullName = user.FullName;
+                    articleManager.CreateArticle(article);
+                    return RedirectToAction(nameof(Index));
                 }
-                article.CreatedAt = DateTime.Now;
-                article.EditAt = DateTime.Now;
-                var user = await userManager.GetUserAsync(User);
-                article.Id = user.Id;
-                article.UserFullName = user.FullName;
-                articleManager.CreateArticle(article);
-                return RedirectToAction(nameof(Index));
+                var categories = dbContext.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName
+                }).ToList();
+
+                ViewBag.CategoryId = categories;
+
+                return View(article);
             }
             catch
             {
@@ -156,15 +171,49 @@ namespace GraduationProjectBMS.Controllers
             }
         }
 
-        [Authorize(Roles = "user")]
-        public IActionResult ToggleLike(int ArticleId)
-        {
-            return View();
+        [HttpGet]
+        public IActionResult Search(string query) {
+            return View(articleManager.GetSearchArticles(query));
         }
 
-        [HttpGet]
-        public IActionResult Search() {
-            return View();
+        public async Task<ActionResult> ToggleLike(int ArticleId)
+        {
+            // Get the current user
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            // check article exists
+            var targetArticle = await dbContext.Articles.FirstOrDefaultAsync(x => x.ArticleId == ArticleId);
+            if (targetArticle == null)
+            {
+                return NotFound();
+            }
+
+            // Check
+            var existingLike = await dbContext.Likes.FirstOrDefaultAsync(l => l.ArticleId == ArticleId && l.UserId == user.Id);
+
+            if (existingLike != null)
+            {
+                // already liked
+                dbContext.Likes.Remove(existingLike);
+                await dbContext.SaveChangesAsync();
+                return Redirect($"/Article/Details/{ArticleId}");
+            }
+            else
+            {
+                // User has not liked the article, so we add a new like
+                var like = new Like
+                {
+                    ArticleId = ArticleId,
+                    UserId = user.Id
+                };
+                dbContext.Likes.Add(like);
+                await dbContext.SaveChangesAsync();
+                return Redirect($"/Article/Details/{ArticleId}");
+            }
         }
     }
 }

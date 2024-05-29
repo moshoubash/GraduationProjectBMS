@@ -14,36 +14,23 @@ namespace GraduationProjectBMS.Repositories.User
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
-        void IUserFunctions.ToggleLike(int id)
-        {
-            
-        }
 
-        void IUserFunctions.CreateArticle(Article article)
+        void IUserFunctions.DeleteUser(string id)
         {
-            dbContext.Articles.Add(article);
+            var targetUser = (from x in dbContext.Users where x.Id == id select x).FirstOrDefault();
+            dbContext.Users.Remove(targetUser);
             dbContext.SaveChanges();
         }
 
-        void IUserFunctions.DeleteArticle(int id)
+        AppUser IUserFunctions.GetUser(string id)
         {
-            var targetArticle = (from article in dbContext.Articles where article.ArticleId == id select article).FirstOrDefault();
-            dbContext.Articles.Remove(targetArticle);
-            dbContext.SaveChanges();
+            var targetUser = (from x in dbContext.Users where x.Id == id select x).FirstOrDefault();
+            return targetUser;
         }
 
-        void IUserFunctions.EditArticle(int id, Article article)
+        List<AppUser> IUserFunctions.GetUsers()
         {
-            var targetArticle = (from x in dbContext.Articles where x.ArticleId == id select x).FirstOrDefault();
-            targetArticle.ArticleTitle = article.ArticleTitle;
-            targetArticle.ArticleContent = article.ArticleContent;
-            targetArticle.ArticleThumbnail = article.ArticleThumbnail;
-            dbContext.SaveChanges();
-        }
-
-        List<Article> IUserFunctions.GetUserArticles(string UserId)
-        {
-            return dbContext.Articles.Where(article => article.Id == UserId).ToList();
+            return dbContext.Users.ToList();
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using System.Xml.Linq;
 
 namespace GraduationProjectBMS.Services
@@ -23,40 +24,40 @@ namespace GraduationProjectBMS.Services
 
             builder.Entity<IdentityRole>().HasData(admin, user);
 
-            // Configure the one-to-many relationship - Article
+            // one to many
 
             builder.Entity<Article>()
                 .HasOne(a => a.AppUser)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.Id);
 
+            // one to many
+
             builder.Entity<Article>()
                 .HasOne(a => a.Category)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.CategoryId);
 
-            // Configure the one-to-many relationship - Category
-
-            builder.Entity<Category>()
-                .HasMany(a => a.Articles)
-                .WithOne(u => u.Category)
-                .HasForeignKey(a => a.ArticleId);
-
-            // Configure the one-to-many relationship - Comments
+            // one-to-many
 
             builder.Entity<Comment>()
-                .HasOne(a => a.AppUser)
-                .WithMany(u => u.Comments)
-                .HasForeignKey(a => a.UserId);
+            .HasOne(c => c.Article)
+            .WithMany(a => a.Comments)
+            .HasForeignKey(c => c.ArticleId);
 
-            // Configure the one-to-many relationship - Replies
+            builder.Entity<Comment>()
+                .HasOne(c => c.AppUser)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId);
+
+            // one-to-many
 
             builder.Entity<Reply>()
                 .HasOne(a => a.AppUser)
                 .WithMany(u => u.Replies)
                 .HasForeignKey(a => a.UserId);
 
-            // Configure the one-to-many relationship - likes
+            // one-to-many
 
             builder.Entity<Like>()
                 .HasOne(a => a.AppUser)
@@ -68,7 +69,7 @@ namespace GraduationProjectBMS.Services
                 .WithMany(x => x.Likes)
                 .HasForeignKey(a => a.ArticleId);
 
-            // Configure the one-to-many relationship - tags
+            // one-to-many
 
             builder.Entity<Tag>()
                 .HasOne(a => a.Article)
@@ -82,5 +83,6 @@ namespace GraduationProjectBMS.Services
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
+        /*public DbSet<ChatApp> Community { get; set; }*/
     }
 }

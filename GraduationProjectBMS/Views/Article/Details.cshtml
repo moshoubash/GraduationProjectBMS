@@ -1,11 +1,9 @@
-﻿@using GraduationProjectBMS.Models;
-@model Article
-@{
+﻿@{
     ViewData["Title"] = "Article Content";
     Layout = "_ArticleLayout";
 }
 
-<div class="container col-md-8" id="blogpost">
+<div class="container col-md-9" id="blogpost">
     <div class="col-md-12">
         <h1 class="display-5">
             @Model.ArticleTitle
@@ -15,13 +13,23 @@
             Created At : @Model.CreatedAt.ToString("dd-MM-yyyy") by @Model.UserFullName
         </p>
 
-        <img src="~/ArticlesThumbnails/@Model.ArticleThumbnail" width="100%"/>
+        <img src="~/ArticlesThumbnails/@Model.ArticleThumbnail" width="100%" alt="@Model.ArticleTitle"/>
 
         <div id="content">
             @Html.Raw(@Model.ArticleContent)
         </div>
-        <a href="#"><i class="fa-solid fa-heart"></i></a>
-        <span>@Model.TotalLikes</span>
+
+        <form action="/Article/ToggleLike" method="post">
+            <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
+            <button type="submit" class="btn btn-primary">Like</button>
+        </form>
+
+        <p>Likes: @(Model.Likes?.Count ?? 0)</p>
+
+        <!--Comments-->
+
+        <h3>Comments</h3>
+
+        
     </div>
 </div>
-

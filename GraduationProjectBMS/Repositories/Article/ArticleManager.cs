@@ -56,9 +56,20 @@ namespace GraduationProjectBMS
             return targetArticle;
         }
 
+        int IArticleManager.GetArticleLikes(int id)
+        {
+            return _dbContext.Likes.Where(x=>x.ArticleId == id).Count();
+        }
+
         List<Article> IArticleManager.GetArticles()
         {
             return _dbContext.Articles.ToList();
+        }
+
+        List<Article> IArticleManager.GetSearchArticles(string query)
+        {
+            return _dbContext.Articles.Where(x => x.ArticleTitle.Contains(query) || 
+                                                  x.ArticleContent.Contains(query)).ToList();
         }
     }
 }

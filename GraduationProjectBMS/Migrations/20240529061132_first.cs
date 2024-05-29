@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GraduationProjectBMS.Migrations
 {
     /// <inheritdoc />
-    public partial class addeverything : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,7 +186,6 @@ namespace GraduationProjectBMS.Migrations
                     EditAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    TotalLikes = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -215,11 +214,16 @@ namespace GraduationProjectBMS.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalLikes = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ArticleId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ArticleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comments_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "ArticleId");
                     table.ForeignKey(
                         name: "FK_Comments_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -304,8 +308,8 @@ namespace GraduationProjectBMS.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6c5f1860-0d15-4713-9fd1-ce602e1265cf", null, "user", "user" },
-                    { "a8f9ac8a-9c76-4420-8432-5cbb022caaf3", null, "admin", "admin" }
+                    { "122f4dbd-66a6-4778-bdc7-8b309e8d05bc", null, "user", "user" },
+                    { "7542c283-c847-43c2-80c2-016e6637926d", null, "admin", "admin" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -356,6 +360,11 @@ namespace GraduationProjectBMS.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ArticleId",
+                table: "Comments",
+                column: "ArticleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",

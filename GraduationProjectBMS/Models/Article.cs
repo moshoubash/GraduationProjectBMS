@@ -17,9 +17,6 @@ namespace GraduationProjectBMS.Models
         public string? Id { get; set; } 
         public AppUser? AppUser { get; set; }
 
-        // Likes
-        public int TotalLikes { get; set; }
-        
         // list from comment class
         public List<Comment>? Comments { get; set; }
         

@@ -1,0 +1,22 @@
+﻿@using GraduationProjectBMS.Models;
+@model List<Category>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "List Of Category";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+@{
+    foreach (var x in Model)
+    {
+        <div class="card p-3">
+            <div style="display:flex; flex-direction:row; justify-content:space-between;">
+                <div class="display-6">Category Name : @x.CategoryName</div>
+                <a href="/Category/Delete/@x.CategoryId" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        <br />
+    }
+}

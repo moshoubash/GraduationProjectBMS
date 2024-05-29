@@ -10,7 +10,7 @@ namespace GraduationProjectBMS.Models
         public int CommentId { get; set; }
         public string? CommentContent { get; set; }
         public DateTime CreatedAt { get; set; }
-        
+
         public int TotalLikes { get; set; }
 
         // one comment may be have multiple replies
@@ -21,7 +21,7 @@ namespace GraduationProjectBMS.Models
         public AppUser? AppUser { get; set; }
 
         // create article referance
-        public string? ArticleId { get; set; }
+        public int? ArticleId { get; set; }
         public Article? Article { get; set; }
     }
 }

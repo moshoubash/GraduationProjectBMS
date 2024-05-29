@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Models.Article
+@{
     ViewData["Title"] = "Create new article";
 }
 
@@ -7,7 +8,7 @@
 </h1>
 <hr />
 
-<form class="col-md-9" method="post" onsubmit="fn()" enctype="multipart/form-data">
+<form method="post" onsubmit="fn()" enctype="multipart/form-data">
     <div class="form-group">
         <label for="title" class="form-label">Article Title</label>
         <input id="title" class="form-control" name="ArticleTitle" type="text"/>
@@ -19,8 +20,13 @@
     </div>
     
     <div class="form-group">
-        <label class="control-label">Article Category</label>
-        <select class="form-control" asp-items="ViewBag.CategoryId"></select>
+        <label for="category" class="control-label">Article Category</label>
+        <select id="category" class="form-control" name="CategoryId">
+            @foreach (var item in ViewBag.CategoryId)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
     </div>
 
     <div class="form-group">

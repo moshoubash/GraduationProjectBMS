@@ -1,12 +1,27 @@
-﻿@{
+﻿@model List<Models.Article>
+@{
     ViewData["Title"] = "Search for articles";
     Layout = "_SearchLayout";
 }
 
 <h1 class="display-1 text-center mb-4">@ViewData["Title"]</h1>
-<form method="post">
+<form method="get" action="/Article/Search">
     <div class="form-group" id="searchBar">
-        <input type="text" class="form-control" id="searchbar" />
+        <input type="text" class="form-control" id="searchbar" name="query" />
         <button type="submit" class="btn btn-dark"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
 </form>
+
+@if (Model != null && Model.Any())
+{
+    <h2>Search Results:</h2>
+    @foreach (var article in Model)
+    {
+        <a href="/Article/Details/@article.ArticleId" style="text-decoration:none;">@article.ArticleTitle</a>
+        <br />
+    }
+}
+else if (Model != null)
+{
+    <p>No articles found.</p>
+}

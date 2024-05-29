@@ -1,0 +1,26 @@
+﻿@using GraduationProjectBMS.Models;
+@model AppUser
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "_LayoutAdmin";
+}
+
+<dl class="card p-3" style="display:flex;justify-content:space-between;align-items:center;">
+    <dt>Id</dt>
+    <dd>@Model.Id</dd>
+</dl>
+<br />
+<dl class="card p-3" style="display:flex;justify-content:space-between;align-items:center;">
+    <dt>Full Name</dt>
+    <dd>@Model.FullName</dd>
+</dl>
+<br />
+<dl class="card p-3" style="display:flex;justify-content:space-between;align-items:center;">
+    <dt>Phone Number</dt>
+    <dd>@Model.PhoneNumber</dd>
+</dl>
+<br />
+<dl class="card p-3" style="display:flex;justify-content:space-between;align-items:center;">
+    <dt>Email</dt>
+    <dd>@Model.Email</dd>
+</dl>

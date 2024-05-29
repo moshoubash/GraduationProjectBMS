@@ -8,5 +8,6 @@ namespace GraduationProjectBMS
         List<Category> GetCategories();
         void DeleteCategory(int id);
         void CreateCategory(Category category);
+        Task<Category> GetCategoryWithArticlesAsync(int categoryId);
     }
 }

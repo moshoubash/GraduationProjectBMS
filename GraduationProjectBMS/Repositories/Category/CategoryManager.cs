@@ -1,4 +1,5 @@
 ﻿using GraduationProjectBMS.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProjectBMS.Repositories.Category
 {
@@ -26,6 +27,13 @@ namespace GraduationProjectBMS.Repositories.Category
         List<Models.Category> ICategoryManager.GetCategories()
         {
             return dbContext.Categories.ToList();
+        }
+
+        async Task<Models.Category> ICategoryManager.GetCategoryWithArticlesAsync(int categoryId)
+        {
+            return await dbContext.Categories
+                             .Include(c => c.Articles)
+                             .FirstOrDefaultAsync(c => c.CategoryId == categoryId);
         }
     }
 }

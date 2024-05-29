@@ -61,5 +61,18 @@ namespace GraduationProjectBMS.Controllers
                 return View();
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCategoryWithArticles(int id)
+        {
+            var category = await categoryManager.GetCategoryWithArticlesAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
     }
 }

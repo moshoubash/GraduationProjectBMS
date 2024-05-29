@@ -38,6 +38,12 @@ namespace GraduationProjectBMS.Services
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.CategoryId);
 
+            // one to many
+            builder.Entity<Category>()
+            .HasMany(c => c.Articles)
+            .WithOne(a => a.Category)
+            .HasForeignKey(a => a.CategoryId);
+
             // one-to-many
 
             builder.Entity<Comment>()

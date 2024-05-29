@@ -1,0 +1,12 @@
+﻿@model CategoryViewModel
+
+<h1>@Model.CategoryName</h1>
+
+<ul>
+    @foreach (var article in Model.Articles)
+    {
+        <li>
+            <h2>@article.ArticleTitle</h2>
+        </li>
+    }
+</ul>

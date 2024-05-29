@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GraduationProjectBMS.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -308,8 +308,8 @@ namespace GraduationProjectBMS.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "122f4dbd-66a6-4778-bdc7-8b309e8d05bc", null, "user", "user" },
-                    { "7542c283-c847-43c2-80c2-016e6637926d", null, "admin", "admin" }
+                    { "3a6d7c1e-4991-4ae0-adbb-96ae18f7a10a", null, "user", "user" },
+                    { "b4096153-2979-4869-9dad-885f83eae10b", null, "admin", "admin" }
                 });
 
             migrationBuilder.CreateIndex(

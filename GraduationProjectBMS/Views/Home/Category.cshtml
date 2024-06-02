@@ -5,8 +5,12 @@
 <ul>
     @foreach (var article in Model.Articles)
     {
-        <li>
-            <h2>@article.ArticleTitle</h2>
-        </li>
+        <div class="card mb-2" style="display:flex;justify-content:space-between;flex-direction:row; align-items:center;">
+            <img src="~/ArticlesThumbnails/@article.ArticleThumbnail" width="20%">
+            <div style="padding-right:20px;">
+                <a href="/Article/Details/@article.ArticleId"><h4 class="display-5">@article.ArticleTitle</h4></a>
+                <p>@Html.Raw(@article.ArticleContent)</p>
+            </div>
+        </div>
     }
 </ul>

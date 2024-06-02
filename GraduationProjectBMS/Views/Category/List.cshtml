@@ -14,7 +14,10 @@
         <div class="card p-3">
             <div style="display:flex; flex-direction:row; justify-content:space-between;">
                 <div class="display-6">Category Name : @x.CategoryName</div>
-                <a href="/Category/Delete/@x.CategoryId" class="btn btn-danger">Delete</a>
+                <div class="btns">
+                    <a href="/Home/Category/@x.CategoryId" class="btn btn-info">Explore</a>
+                    <a href="/Category/Delete/@x.CategoryId" class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
         <br />

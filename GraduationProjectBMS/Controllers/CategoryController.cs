@@ -49,6 +49,7 @@ namespace GraduationProjectBMS.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int id)
         {
             try

@@ -7,7 +7,7 @@
 <h1 class="text-center">@ViewData["Title"]</h1>
 <br />
 <table class="table table-bordered mt-3">
-    <thead>
+    <thead class="table-dark">
         <tr>
             <th>Id</th>
             <th>Title</th>
@@ -22,7 +22,7 @@
                 <tr class="Search">
                     <td>@x.ArticleId</td>
                     <td>@x.ArticleTitle</td>
-                    <td>@x.CreatedAt</td>
+                    <td>@x.CreatedAt.ToString("dd-MM-yyyy")</td>
                     <td>
                         <a href="/Article/Edit/@x.ArticleId/" class="btn btn-dark">Edit</a>
                         <a href="/Article/Details/@x.ArticleId/" class="btn btn-warning">Details</a>

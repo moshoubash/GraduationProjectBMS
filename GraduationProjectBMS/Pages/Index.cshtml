@@ -3,33 +3,6 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-@* <div class="container">
-    <div class="row p-1">
-        <div class="col-1">User</div>
-        <div class="col-5"><input type="text" id="userInput" /></div>
-    </div>
-    <div class="row p-1">
-        <div class="col-1">Message</div>
-        <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
-    </div>
-    <div class="row p-1">
-        <div class="col-6 text-end">
-            <input type="button" id="sendButton" value="Send Message" />
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col-6">
-            <hr />
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
-</div>
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/chat.js"></script> *@
 
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -37,17 +10,13 @@
             @{
                 foreach (var x in Model.GetArticles())
                 {
-                    <!-- Post preview-->
                     <div class="post">
                         <a href="/Article/Details/@x.ArticleId" target="_blank"><h2>@x.ArticleTitle</h2></a>
                         <p class="text-secondary">Posted by @x.UserFullName on @x.CreatedAt.ToString("dd-MM-yyyy")</p>
                     </div>
-                    <!-- Divider-->
                     <hr class="my-4" />
                 }
             }
-            <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ namespace GraduationProjectBMS
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-            builder.Services.AddSignalR();
+            /*builder.Services.AddSignalR();*/
             
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
@@ -53,7 +53,7 @@ namespace GraduationProjectBMS
             app.UseAuthorization();
 
             app.MapRazorPages();
-            app.MapHub<ChatHub>("/chatHub");
+            /*app.MapHub<ChatHub>("/chatHub");*/
             app.Run();
         }
     }

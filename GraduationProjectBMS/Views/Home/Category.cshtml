@@ -1,6 +1,6 @@
 ﻿@model CategoryViewModel
 
-<h1>@Model.CategoryName</h1>
+<h1>@Model.CategoryName Category</h1>
 
 <ul>
     @foreach (var article in Model.Articles)
@@ -9,7 +9,6 @@
             <img src="~/ArticlesThumbnails/@article.ArticleThumbnail" width="20%">
             <div style="padding-right:20px;">
                 <a href="/Article/Details/@article.ArticleId"><h4 class="display-5">@article.ArticleTitle</h4></a>
-                <p>@Html.Raw(@article.ArticleContent)</p>
             </div>
         </div>
     }

@@ -284,13 +284,13 @@ namespace GraduationProjectBMS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b4096153-2979-4869-9dad-885f83eae10b",
+                            Id = "40feb797-a2a0-422d-926c-9709dd90d934",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "3a6d7c1e-4991-4ae0-adbb-96ae18f7a10a",
+                            Id = "1bb5bda2-51c0-4a71-9c3b-3b880a02e939",
                             Name = "user",
                             NormalizedName = "user"
                         });

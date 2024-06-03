@@ -1,6 +1,7 @@
 ﻿using GraduationProjectBMS.Models;
 using GraduationProjectBMS.Repositories.User;
 using GraduationProjectBMS.Services;
+using GraduationProjectBMS.ViewModels;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -97,7 +98,7 @@ namespace GraduationProjectBMS.Controllers
                     article.Id = user.Id;
                     article.UserFullName = user.FullName;
                     articleManager.CreateArticle(article);
-                    return RedirectToAction(nameof(Index));
+                    return Redirect("/Article/Index");
                 }
                 var categories = dbContext.Categories.Select(c => new SelectListItem
                 {
@@ -106,7 +107,6 @@ namespace GraduationProjectBMS.Controllers
                 }).ToList();
 
                 ViewBag.CategoryId = categories;
-
                 return View(article);
             }
             catch
@@ -214,6 +214,54 @@ namespace GraduationProjectBMS.Controllers
                 await dbContext.SaveChangesAsync();
                 return Redirect($"/Article/Details/{ArticleId}");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(CommentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var comment = new Comment
+                {
+                    CommentContent = model.CommentContent,
+                    UserId = User.Identity.Name, // or however you get the current user ID
+                    ArticleId = model.ArticleId,
+                    CreatedAt = DateTime.Now
+                };
+
+                dbContext.Comments.Add(comment);
+                await dbContext.SaveChangesAsync();
+
+                return RedirectToAction("Details", new { id = model.ArticleId });
+            }
+
+            // Handle validation errors
+            return RedirectToAction("Details", new { id = model.ArticleId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReply(ReplyViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var reply = new Reply
+                {
+                    ReplyContent = model.ReplyContent,
+                    UserId = User.Identity.Name, // or however you get the current user ID
+                    CommentId = model.CommentId,
+                    CreatedAt = DateTime.Now
+                };
+
+                dbContext.Replies.Add(reply);
+                await dbContext.SaveChangesAsync();
+
+                var comment = await dbContext.Comments.FindAsync(model.CommentId);
+                return RedirectToAction("Details", new { id = comment.ArticleId });
+            }
+
+            // Handle validation errors
+            var commentWithArticle = await dbContext.Comments.Include(c => c.Article).FirstOrDefaultAsync(c => c.CommentId == model.CommentId);
+            return RedirectToAction("Details", new { id = commentWithArticle.ArticleId });
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using GraduationProjectBMS.Models;
 using GraduationProjectBMS.Repositories.User;
 using GraduationProjectBMS.Services;
-using GraduationProjectBMS.ViewModels;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -54,7 +53,7 @@ namespace GraduationProjectBMS.Controllers
             var article = dbContext.Articles
             .Include(a => a.Likes)
             .FirstOrDefault(a => a.ArticleId == id);
-
+            ViewBag.ArticleComments = articleManager.GetComments(id);
             if (article == null)
             {
                 return NotFound();
@@ -217,29 +216,17 @@ namespace GraduationProjectBMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(CommentViewModel model)
+        public async Task<IActionResult> AddComment(Comment comment)
         {
-            if (ModelState.IsValid)
-            {
-                var comment = new Comment
-                {
-                    CommentContent = model.CommentContent,
-                    UserId = User.Identity.Name, // or however you get the current user ID
-                    ArticleId = model.ArticleId,
-                    CreatedAt = DateTime.Now
-                };
-
-                dbContext.Comments.Add(comment);
-                await dbContext.SaveChangesAsync();
-
-                return RedirectToAction("Details", new { id = model.ArticleId });
-            }
-
-            // Handle validation errors
-            return RedirectToAction("Details", new { id = model.ArticleId });
+            var currentUser = await userManager.GetUserAsync(User);
+            comment.UserId = currentUser.Id;
+            comment.CreatedAt = DateTime.Now;
+            dbContext.Comments.Add(comment);
+            dbContext.SaveChanges();
+            return Redirect($"/Article/Details/{comment.ArticleId}");
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> AddReply(ReplyViewModel model)
         {
             if (ModelState.IsValid)
@@ -262,6 +249,6 @@ namespace GraduationProjectBMS.Controllers
             // Handle validation errors
             var commentWithArticle = await dbContext.Comments.Include(c => c.Article).FirstOrDefaultAsync(c => c.CommentId == model.CommentId);
             return RedirectToAction("Details", new { id = commentWithArticle.ArticleId });
-        }
+        }*/
     }
 }

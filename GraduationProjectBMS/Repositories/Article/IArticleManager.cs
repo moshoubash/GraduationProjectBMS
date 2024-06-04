@@ -13,5 +13,6 @@ namespace GraduationProjectBMS
         public Article GetArticleByTitle(string ArticleTitle);
         public int GetArticleLikes(int id);
         public List<Article> GetSearchArticles(string query);
+        public List<Comment> GetComments(int id);
     }
 }

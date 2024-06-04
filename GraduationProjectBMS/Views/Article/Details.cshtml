@@ -23,15 +23,34 @@
 
         <form action="/Article/ToggleLike" method="post">
             <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
-            <button type="submit" class="btn btn-primary">Like</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-thumbs-up"></i></button>
         </form>
 
         <p>Likes: @(Model.Likes?.Count ?? 0)</p>
-
+        
         <!--Comments-->
-
         <h3>Comments</h3>
 
-        
+        @{
+            foreach (var x in ViewBag.ArticleComments)
+            {
+                <div class="card p-3">
+                    <p>@x.UserId comments this : </p>
+                    <p>@x.CommentContent</p>
+                </div>    
+            }
+        }
+
+        <p>Write a comment : </p>
+
+        <form action="/Article/AddComment" method="post">
+            <input type="text" name="CommentContent" class="form-control" placeholder="write comment"/>
+            <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+
+        <!--Replies-->
+        <!--Tags-->
+        <!--Related Articles-->
     </div>
 </div>

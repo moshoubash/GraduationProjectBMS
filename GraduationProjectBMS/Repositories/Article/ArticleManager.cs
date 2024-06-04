@@ -66,6 +66,11 @@ namespace GraduationProjectBMS
             return _dbContext.Articles.ToList();
         }
 
+        List<Comment> IArticleManager.GetComments(int id)
+        {
+            return _dbContext.Comments.Where(x=>x.ArticleId == id).ToList();
+        }
+
         List<Article> IArticleManager.GetSearchArticles(string query)
         {
             return _dbContext.Articles.Where(x => x.ArticleTitle.Contains(query) || 

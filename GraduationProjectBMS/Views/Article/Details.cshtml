@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Article Content";
     Layout = "_ArticleLayout";
+    var alertMessageComment = TempData["AlertMessageComment"] as string;
+    var alertMessageReply = TempData["AlertMessageReply"] as string;
 }
 
 <div class="container col-md-9" id="blogpost">
@@ -29,19 +31,153 @@
         <p>Likes: @(Model.Likes?.Count ?? 0)</p>
         
         <!--Comments-->
-        <h3>Comments</h3>
+        <!-- Comments Section -->
 
+        <h3>Comments</h3>
         @{
-            foreach (var x in ViewBag.ArticleComments)
+            foreach (var x in ViewBag.ArticleCommentReplies)
+            {
+                <div class="card p-3 mb-3">
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p><strong>@x.UserId commented:</strong> @x.CommentContent</p>
+                                <a class="btn btn-danger btn-sm" href="/Article/DeleteComment/@x.CommentId" aria-label="Delete Comment">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(alertMessageComment))
+                            {
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    @alertMessageComment
+                                </div>
+                            }
+
+                            <div class="ms-4">
+                                @foreach (var reply in x.Replies)
+                                {
+                                    <div class="card mt-2">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p><strong>@reply.UserId replied:</strong> @reply.ReplyContent</p>
+                                                <a class="btn btn-danger btn-sm" href="/Article/DeleteReply/@reply.ReplyId" aria-label="Delete Reply">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(alertMessageReply))
+                                            {
+                                                <div class="alert alert-danger mt-2" role="alert">
+                                                    @alertMessageReply
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="/Article/AddReply" method="post" class="mt-3">
+                        <div class="input-group">
+                            <input type="text" name="ReplyContent" class="form-control" placeholder="Write a reply" required />
+                            <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
+                            <input type="hidden" name="CommentId" value="@x.CommentId" />
+                            <button type="submit" class="btn btn-primary">Reply</button>
+                        </div>
+                    </form>
+                </div>
+            }
+        }
+
+        <p class="display-6">Write a comment:</p>
+
+        <form action="/Article/AddComment" method="post" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="CommentContent" class="form-control" placeholder="Write a comment" required />
+                <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </div>
+        </form>
+
+        <!-- Share Section -->
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0" nonce="uzHV6AFV"></script>
+
+        <!-- Share Button -->
+        <div class="fb-share-button" data-href="http://localhost:5294/Article/Details/@Model.ArticleId" data-layout="">
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:5294/Article/Details/@Model.ArticleId" class="fb-xfbml-parse-ignore">Share</a>
+        </div>
+        <hr />
+
+        <!--Tags-->
+
+        <div>
+            <h5>Tags:</h5>
+            @foreach (var tag in Model.Tags)
+            {
+                <span class="badge bg-secondary">@tag.TagName</span>
+            }
+        </div>
+
+
+        @* 
+        <h3>Comments</h3>
+        @{
+            foreach (var x in ViewBag.ArticleCommentReplies)
             {
                 <div class="card p-3">
-                    <p>@x.UserId comments this : </p>
-                    <p>@x.CommentContent</p>
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div>
+                                <p><strong>@x.UserId commented:</strong> @x.CommentContent</p>
+                                <a class="btn btn-danger" href="/Article/DeleteComment/@x.CommentId"><i class="fa-solid fa-trash-can"></i></a>
+
+                                @if (!string.IsNullOrEmpty(alertMessageComment))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @alertMessageComment
+                                    </div>
+                                }
+                            </div>
+
+                            <br />
+
+                            <div class="ml-3">
+                                @foreach (var reply in x.Replies)
+                                {
+                                    <div class="card mt-1">
+                                        <div class="card-body">
+                                            <p><strong>@reply.UserId replied:</strong> @reply.ReplyContent</p>
+                                            <a class="btn btn-danger" href="/Article/DeleteReply/@reply.ReplyId"><i class="fa-solid fa-trash-can"></i></a>
+
+                                            @if (!string.IsNullOrEmpty(alertMessageReply))
+                                            {
+                                                <div class="alert alert-danger" role="alert">
+                                                    @alertMessageReply
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br />
+
+                    <form action="/Article/AddReply" method="post">
+                        <input type="text" name="ReplyContent" class="form-control" placeholder="write reply" />
+                        <input type="hidden" name="ArticleId" value="@Model.ArticleId" />
+                        <input type="hidden" name="CommentId" value="@x.CommentId" />
+                        <button type="submit" class="btn btn-primary">Reply</button>
+                    </form>
                 </div>    
             }
         }
 
-        <p>Write a comment : </p>
+        <p class="display-6">Write a comment : </p>
 
         <form action="/Article/AddComment" method="post">
             <input type="text" name="CommentContent" class="form-control" placeholder="write comment"/>
@@ -49,8 +185,13 @@
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>
 
-        <!--Replies-->
-        <!--Tags-->
+        <!--Share Section-->
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0" nonce="uzHV6AFV"></script>
+        
+        <!--Share Button-->
+        <div class="fb-share-button" data-href="http://localhost:5294/Article/Details/@Model.ArticleId" data-layout=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+ *@
         <!--Related Articles-->
     </div>
 </div>

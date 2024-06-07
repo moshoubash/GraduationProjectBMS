@@ -14,5 +14,10 @@ namespace GraduationProjectBMS
         public int GetArticleLikes(int id);
         public List<Article> GetSearchArticles(string query);
         public List<Comment> GetComments(int id);
+        public List<Reply> GetReplies(int Articleid, int CommentId);
+        public List<Comment> GetCommentsWithReplies(int articleId);
+        public void DeleteComment(int id);
+        public void DeleteReply(int id);
+        List<string> GenerateTags(string content);
     }
 }

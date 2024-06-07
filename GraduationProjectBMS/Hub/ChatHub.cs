@@ -1,12 +1,24 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using GraduationProjectBMS.Repositories.MLModel;
+using Microsoft.AspNetCore.SignalR;
 
-namespace GraduationProjectBMS.Hubs
+public class ChatHub : Hub
 {
-    public class ChatHub : Hub
+    private readonly IMLModel _mlModel;
+
+    public ChatHub(IMLModel mlModel)
     {
-        public async Task SendMessage(string user, string message)
+        _mlModel = mlModel;
+    }
+
+    public async Task SendMessage(string user, string message)
+    {
+        if (_mlModel.IsMessageAllowed(message))
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }
+        else
+        {
+            await Clients.Caller.SendAsync("ReceiveMessage", "System", "Your message contains inappropriate content.");
         }
     }
 }

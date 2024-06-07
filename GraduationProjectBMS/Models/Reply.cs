@@ -18,5 +18,9 @@ namespace GraduationProjectBMS.Models
         // referance for comment id
         public int CommentId { get; set; }
         public Comment? Comment { get; set; }
+
+        // referance for comment id
+        public int ArticleId { get; set; }
+        public Article? Article { get; set; }
     }
 }

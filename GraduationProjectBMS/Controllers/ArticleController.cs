@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Cryptography.Pkcs;
@@ -48,12 +49,15 @@ namespace GraduationProjectBMS.Controllers
         }
 
         // GET: ArticleController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int commentId)
         {
             var article = dbContext.Articles
             .Include(a => a.Likes)
+            .Include(t => t.Tags)
             .FirstOrDefault(a => a.ArticleId == id);
-            ViewBag.ArticleComments = articleManager.GetComments(id);
+
+            ViewBag.ArticleCommentReplies = articleManager.GetCommentsWithReplies(id);
+
             if (article == null)
             {
                 return NotFound();
@@ -97,6 +101,19 @@ namespace GraduationProjectBMS.Controllers
                     article.Id = user.Id;
                     article.UserFullName = user.FullName;
                     articleManager.CreateArticle(article);
+
+                    var tags = articleManager.GenerateTags(article.ArticleContent);
+                    foreach (var tagName in tags)
+                    {
+                        var tag = new Tag
+                        {
+                            TagName = tagName,
+                            ArticleId = article.ArticleId
+                        };
+                        dbContext.Tags.Add(tag);
+                    }
+                    dbContext.SaveChanges();
+
                     return Redirect("/Article/Index");
                 }
                 var categories = dbContext.Categories.Select(c => new SelectListItem
@@ -216,6 +233,7 @@ namespace GraduationProjectBMS.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddComment(Comment comment)
         {
             var currentUser = await userManager.GetUserAsync(User);
@@ -226,29 +244,49 @@ namespace GraduationProjectBMS.Controllers
             return Redirect($"/Article/Details/{comment.ArticleId}");
         }
 
-        /*[HttpPost]
-        public async Task<IActionResult> AddReply(ReplyViewModel model)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddReply(Reply reply)
         {
-            if (ModelState.IsValid)
+            var currentUser = await userManager.GetUserAsync(User);
+            reply.UserId = currentUser.Id;
+            reply.CreatedAt = DateTime.Now;
+            dbContext.Replies.Add(reply);
+            dbContext.SaveChanges();
+            return Redirect($"/Article/Details/{reply.ArticleId}");
+        }
+        
+        [Authorize]
+        public async Task<IActionResult> DeleteComment(int id) {
+            var currentUser = await userManager.GetUserAsync(User);
+            var targetComment = await dbContext.Comments.FindAsync(id);
+
+            if (targetComment != null && targetComment.UserId == currentUser.Id)
             {
-                var reply = new Reply
-                {
-                    ReplyContent = model.ReplyContent,
-                    UserId = User.Identity.Name, // or however you get the current user ID
-                    CommentId = model.CommentId,
-                    CreatedAt = DateTime.Now
-                };
-
-                dbContext.Replies.Add(reply);
+                dbContext.Comments.Remove(targetComment);
                 await dbContext.SaveChangesAsync();
+                return Redirect($"/Article/Details/{targetComment.ArticleId}");
+            }
+         
+            TempData["AlertMessageComment"] = "You do not have permission to delete this comment.";
+            return Redirect($"/Article/Details/{targetComment.ArticleId}");
+        }
+        
+        [Authorize]
+        public async Task<IActionResult> DeleteReply(int id)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            var targetReply = await dbContext.Replies.FindAsync(id);
 
-                var comment = await dbContext.Comments.FindAsync(model.CommentId);
-                return RedirectToAction("Details", new { id = comment.ArticleId });
+            if (targetReply != null && targetReply.UserId == currentUser.Id)
+            {
+                dbContext.Replies.Remove(targetReply);
+                await dbContext.SaveChangesAsync();
+                return Redirect($"/Article/Details/{targetReply.ArticleId}");
             }
 
-            // Handle validation errors
-            var commentWithArticle = await dbContext.Comments.Include(c => c.Article).FirstOrDefaultAsync(c => c.CommentId == model.CommentId);
-            return RedirectToAction("Details", new { id = commentWithArticle.ArticleId });
-        }*/
+            TempData["AlertMessageReply"] = "You do not have permission to delete this reply.";
+            return Redirect($"/Article/Details/{targetReply.ArticleId}");
+        }
     }
 }

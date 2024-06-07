@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using GraduationProjectBMS.Email;
 using GraduationProjectBMS.Repositories.User;
 using GraduationProjectBMS.Repositories.Category;
-using GraduationProjectBMS.Hubs;
+using GraduationProjectBMS.Repositories.MLModel;
 
 namespace GraduationProjectBMS
 {
@@ -18,8 +18,8 @@ namespace GraduationProjectBMS
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-            /*builder.Services.AddSignalR();*/
-            
+            builder.Services.AddSignalR();
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<MyDbContext>(op => op.UseSqlServer(connectionString));
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -33,8 +33,8 @@ namespace GraduationProjectBMS
             builder.Services.AddTransient<IUserFunctions, UserFunctions>();
             builder.Services.AddTransient<ICategoryManager, CategoryManager>();
 
-
-            /*builder.Services.AddControllersWithViews();*/
+            // Inject machine learning model service
+            builder.Services.AddSingleton<IMLModel, MLModel>();
 
             var app = builder.Build();
 
@@ -44,6 +44,9 @@ namespace GraduationProjectBMS
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            // Training model
+            ModelBuilder.Train();
+            Console.WriteLine("Model training complete.");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -53,7 +56,7 @@ namespace GraduationProjectBMS
             app.UseAuthorization();
 
             app.MapRazorPages();
-            /*app.MapHub<ChatHub>("/chatHub");*/
+            app.MapHub<ChatHub>("/chatHub");
             app.Run();
         }
     }

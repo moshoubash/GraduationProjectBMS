@@ -14,7 +14,7 @@ namespace GraduationProjectBMS.Services
             
         }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder builder) {
             base.OnModelCreating(builder);
 
             var admin = new IdentityRole("admin");

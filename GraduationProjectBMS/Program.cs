@@ -24,14 +24,13 @@ namespace GraduationProjectBMS
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MyDbContext>();
             builder.Services.AddMvc(op => op.EnableEndpointRouting = false);
-
+            builder.Services.AddSignalR();
+            builder.Services.AddSingleton<BadWordsFilterService>();
             // repository services injection
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IArticleManager, ArticleManager>();
             builder.Services.AddTransient<IUserFunctions, UserFunctions>();
             builder.Services.AddTransient<ICategoryManager, CategoryManager>();
-
-            // Inject machine learning model service
 
             var app = builder.Build();
 
@@ -53,6 +52,7 @@ namespace GraduationProjectBMS
             app.UseAuthorization();
 
             app.MapRazorPages();
+            app.MapHub<ChatHub>("/chatHub");
             app.Run();
         }
     }

@@ -13,11 +13,11 @@ namespace GraduationProjectBMS.Models
         public DateTime EditAt { get; set; }
         public string? UserFullName { get; set; }
 
-        // referance for AppUser class
+        // reference for AppUser class
         public string? Id { get; set; } 
         public AppUser? AppUser { get; set; }
 
-        // list from comment class
+        // list from Comment class
         public List<Comment>? Comments { get; set; }
         
         // list from Tag class
@@ -26,7 +26,7 @@ namespace GraduationProjectBMS.Models
         // list from like class
         public List<Like>? Likes { get; set; }
 
-        // referance for category class
+        // reference for category class
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
     }

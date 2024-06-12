@@ -89,6 +89,5 @@ namespace GraduationProjectBMS.Services
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
-        /*public DbSet<ChatApp> Community { get; set; }*/
     }
 }

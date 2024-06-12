@@ -25,11 +25,23 @@ namespace GraduationProjectBMS
                 .AddEntityFrameworkStores<MyDbContext>();
             builder.Services.AddMvc(op => op.EnableEndpointRouting = false);
             builder.Services.AddSignalR();
-            builder.Services.AddSingleton<BadWordsFilterService>();
+            
+            
             // repository services injection
+            
+            // register badwords service
+            builder.Services.AddSingleton<BadWordsFilterService>();
+            
+            // register email sender service
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
+            
+            // register Article services
             builder.Services.AddTransient<IArticleManager, ArticleManager>();
+            
+            // register Users services
             builder.Services.AddTransient<IUserFunctions, UserFunctions>();
+            
+            // register Categories services
             builder.Services.AddTransient<ICategoryManager, CategoryManager>();
 
             var app = builder.Build();
@@ -40,10 +52,7 @@ namespace GraduationProjectBMS
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            // Training model
-            /*ModelBuilder.Train();
-            Console.WriteLine("Model training complete.");
-*/
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -9,8 +9,7 @@ namespace GraduationProjectBMS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryId { get; set; }
         public string? CategoryName { get; set; }
-
+        // each category have many articles
         public List<Article>? Articles { get; set; }
-
     }
 }

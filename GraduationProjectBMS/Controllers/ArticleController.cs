@@ -24,6 +24,7 @@ namespace GraduationProjectBMS.Controllers
         private readonly MyDbContext dbContext;
         public ArticleController(UserManager<AppUser> userManager, IArticleManager articleManager, IWebHostEnvironment webHostEnvironment, SignInManager<AppUser> signManager,  MyDbContext dbContext)
         {
+            // Dependency injection
             this.articleManager = articleManager;
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
@@ -287,6 +288,13 @@ namespace GraduationProjectBMS.Controllers
 
             TempData["AlertMessageReply"] = "You do not have permission to delete this reply.";
             return Redirect($"/Article/Details/{targetReply.ArticleId}");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Analysis() {
+            var currnetUser = await userManager.GetUserAsync(User);
+            ViewBag.ArticlesCount = articleManager.GetUserArticles(currnetUser.Id.ToString()).Count();
+            return View();
         }
     }
 }
